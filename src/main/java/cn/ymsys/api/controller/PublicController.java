@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.ymsys.api.service.TranService;
 import cn.ymsys.enums.Enums.ResponseCode;
+import cn.ymsys.util.Const;
 import cn.ymsys.util.ReturnUtils;
 
 @RestController
@@ -23,6 +25,8 @@ public class PublicController {
 	private HttpServletRequest req;
 	@Autowired
 	private HttpServletResponse res;
+	@Autowired
+	private TranService tranService;
 
 	@RequestMapping("/upload")
 	public void handleFileUpload(@RequestParam("file") MultipartFile file) {
@@ -35,19 +39,17 @@ public class PublicController {
 		// 获取文件的后缀名
 		String suffixName = fileName.substring(fileName.lastIndexOf("."));
 		System.out.println("上传的后缀名为：" + suffixName);
-		// 文件上传后的路径
-		String filePath = "/usr/local/nginx/html/img/";
-		System.out.println(filePath);
 		// 解决中文问题，liunx下中文路径，图片显示问题
 		fileName = UUID.randomUUID() + suffixName;
-		System.out.println("上传的路径为：" + filePath + fileName);
-		File dest = new File(filePath + fileName);
+		System.out.println("上传的路径为：" + Const.ROOT + fileName);
+		File dest = new File(Const.ROOT + fileName);
 		// 检测是否存在目录
 		if (!dest.getParentFile().exists()) {
 			dest.getParentFile().mkdirs();
 		}
 		try {
 			file.transferTo(dest);
+			tranService.save(fileName);
 			ReturnUtils.outputCn(fileName, ResponseCode.SUCCESS.getStateCode(), res);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
