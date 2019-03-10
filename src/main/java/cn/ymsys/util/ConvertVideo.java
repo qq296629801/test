@@ -20,7 +20,7 @@ public class ConvertVideo {
 
 		try {
 			frameGrabber.start();
-			fileName = file.getAbsolutePath().replace(".mp4", "_edited.ts");
+			fileName = file.getAbsolutePath().replace(".mp4", "_edited.mp4");
 			recorder = new FFmpegFrameRecorder(fileName, frameGrabber.getImageWidth(), frameGrabber.getImageHeight(),
 					frameGrabber.getAudioChannels());
 			recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264); // avcodec.AV_CODEC_ID_H264  //AV_CODEC_ID_MPEG4

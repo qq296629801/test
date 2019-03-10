@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.ymsys.api.service.TranService;
+import cn.ymsys.util.Trans;
 
 @Controller
 @RequestMapping("/")
@@ -17,6 +18,7 @@ public class TestController {
 	@RequestMapping
 	public String index() throws IOException, InterruptedException {
 		tranService.save("test");
+		new Trans().start();
 		return "ok";
 	}
 }
