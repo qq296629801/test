@@ -25,7 +25,7 @@ public class TranService {
 	}
 
 	public Record findFileByName(String fileName) {
-		return Db.findFirst("select * from files where file_name=" + fileName);
+		return Db.findFirst("select * from files where file_name='" + fileName + "'");
 	}
 
 	public List<Record> getTrans() {
