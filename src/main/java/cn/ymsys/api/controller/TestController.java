@@ -2,25 +2,40 @@ package cn.ymsys.api.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import cn.ymsys.api.service.TranService;
-import cn.ymsys.util.Trans;
+import cn.ymsys.util.Const;
+import cn.ymsys.util.Shell;
 
-@Controller
+@RestController
 @RequestMapping("/")
 public class TestController {
 	@Autowired
-	private TranService tranService;
+	private HttpServletRequest request;
+
+	private Shell shell = new Shell();
 
 	@RequestMapping
-	@ResponseBody
 	public String index() throws IOException, InterruptedException {
-		tranService.save("test");
-		new Trans().start();
 		return "ok";
+	}
+
+	@RequestMapping("/ts")
+	public String ts() {
+		return shell.ts(Const.ROOT + request.getParameter("name"));
+	}
+
+	@RequestMapping("/m3u8")
+	public String m3u8() {
+		return shell.m3u8(Const.ROOT + request.getParameter("name"));
+	}
+
+	@RequestMapping("/ps")
+	public String ps() {
+		return shell.ps(request.getParameter("name"));
 	}
 }
